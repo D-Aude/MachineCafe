@@ -4,13 +4,13 @@ import java.util.Objects;
 
 public class Boisson {
 
-	
+
 	private TypeBoisson typeBoisson;
 	private String nbSucre;
 	private String touillete;
-	
-	
-	
+	private boolean estUneBoissonChaude;
+
+
 	public TypeBoisson getTypeBoisson() {
 		return typeBoisson;
 	}
@@ -26,20 +26,29 @@ public class Boisson {
 		return touillete;
 	}
 
-	
 
-	public Boisson(TypeBoisson typeBoisson, String nbSucre, String touillete) {
+
+	public Boisson(TypeBoisson typeBoisson, String nbSucre, String touillete, boolean estUneBoissonChaude) {
+		super();
 		this.typeBoisson = typeBoisson;
 		this.nbSucre = nbSucre;
 		this.touillete = touillete;
+		this.estUneBoissonChaude = estUneBoissonChaude;
+	}
+
+
+
+	public boolean estUneBoissonChaude() {
+		return estUneBoissonChaude;
 	}
 
 
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(nbSucre, touillete, typeBoisson);
+		return Objects.hash(estUneBoissonChaude, nbSucre, touillete, typeBoisson);
 	}
+
 
 
 	@Override
@@ -51,9 +60,13 @@ public class Boisson {
 		if (getClass() != obj.getClass())
 			return false;
 		Boisson other = (Boisson) obj;
-		return nbSucre == other.nbSucre && touillete == other.touillete
-				&& Objects.equals(typeBoisson, other.typeBoisson);
+		return estUneBoissonChaude == other.estUneBoissonChaude && Objects.equals(nbSucre, other.nbSucre)
+				&& Objects.equals(touillete, other.touillete) && typeBoisson == other.typeBoisson;
 	}
+
+
+
 	
-	
+
+
 }
