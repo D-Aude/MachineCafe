@@ -11,12 +11,19 @@ import repositories.ReportCommandeRepository;
 public class BoissonService {
 	
 	private final static String MESSAGE_PRIX_MANQUANT = "M: prix manquant ";
+	private final  CommandeRepositoryI commandeRepo ;
+	
+	public BoissonService(CommandeRepositoryI commandeRepo) {
+		this.commandeRepo = commandeRepo;
+	}
+
 
 	public  String getBoisson(Boisson commandeBoissonMachine, double prix) {
 		if (commandeBoissonMachine.getTypeBoisson().getPrix() > prix) {
 			
 				return argentInsuffisantMessage(commandeBoissonMachine.getTypeBoisson(), prix);
 		}else {
+			commandeRepo.ajouterBoisson(commandeBoissonMachine.getTypeBoisson());
 			return protocoleCommandeEnvoye(commandeBoissonMachine);
 		}
 
@@ -48,6 +55,7 @@ public class BoissonService {
 		String boissonProtocole = String.join(":", typeBoisson,nbSucre,touillette);
 		return boissonProtocole;
 	}
+
 
 
 }

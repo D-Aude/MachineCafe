@@ -19,11 +19,13 @@ public class BoissonServiceTest {
 	@Mock
 	private BoissonService boissonService;
 	
+	@Mock
+	private CommandeRepositoryI commandeRepo;
 
 	  @Before
 	  public void init() {
-	
-		  boissonService = new BoissonService();
+		  commandeRepo = new ReportCommandeRepository();
+		  boissonService = new BoissonService(this.commandeRepo);
 	  }
 	
 	
