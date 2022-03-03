@@ -1,19 +1,28 @@
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import entitie.Boisson;
 import entitie.TypeBoisson;
+import repositories.BeverageQuantityChecker;
+import repositories.BeverageQuantityCheckerRepository;
 import repositories.CommandeRepositoryI;
+import repositories.EmailNotifier;
+import repositories.EmailNotifierRepository;
 import repositories.ReportCommandeRepository;
 import service.BoissonService;
 
 @ExtendWith(MockitoExtension.class)
-
 public class BoissonServiceTest {
 
 	@Mock
@@ -21,11 +30,23 @@ public class BoissonServiceTest {
 	
 	@Mock
 	private CommandeRepositoryI commandeRepo;
+	
+	@Mock
+	private BeverageQuantityChecker bevCheck;
+
+	@Mock
+	private EmailNotifier notif;
+	@Mock
+	private EmailNotifier notifvv;
+
 
 	  @Before
 	  public void init() {
 		  commandeRepo = new ReportCommandeRepository();
-		  boissonService = new BoissonService(this.commandeRepo);
+		  notif = new EmailNotifierRepository();
+		  bevCheck = new BeverageQuantityCheckerRepository();
+		  boissonService = new BoissonService(this.commandeRepo, this.notif, this.bevCheck);
+	
 	  }
 	
 	
@@ -93,5 +114,19 @@ public class BoissonServiceTest {
 		Boisson boisson = new Boisson (TypeBoisson.ORANGE,"","", false);
 		assertEquals("M: prix manquant 0,1", boissonService.getBoisson(boisson,0.50 ));
 	}
+	
+	//Quantite suffisante
+	@Test
+	public void quantiteSuffisante() {
+		
+		
+		assertFalse(bevCheck.isEmpty(TypeBoisson.ORANGE.getCodeBoisson()));
+		assertFalse(bevCheck.isEmpty(TypeBoisson.COFFEE.getCodeBoisson()));
+		assertFalse(bevCheck.isEmpty(TypeBoisson.CHOCOLATE.getCodeBoisson()));
+		assertFalse(bevCheck.isEmpty(TypeBoisson.TEA.getCodeBoisson()));
+		
+	}
+
+
 	
 }
